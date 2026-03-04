@@ -1,0 +1,182 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== FONTS ===== */
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/Fraunces.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/InstrumentSerif.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Figtree";
+  src: url("/assets/fonts/Figtree.woff2") format("woff2");
+  font-weight: 300 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ===== DESIGN TOKENS ===== */
+@layer base {
+  :root {
+    --radius: 0.875rem;
+
+    /* Core palette — deep forest green + warm cream */
+    --background: 0.985 0.004 100;
+    --foreground: 0.18 0.03 150;
+
+    --card: 1 0 0;
+    --card-foreground: 0.18 0.03 150;
+
+    --popover: 1 0 0;
+    --popover-foreground: 0.18 0.03 150;
+
+    /* Primary: deep forest green */
+    --primary: 0.32 0.095 155;
+    --primary-foreground: 0.98 0.004 100;
+
+    /* Secondary: very soft sage */
+    --secondary: 0.94 0.022 140;
+    --secondary-foreground: 0.22 0.055 152;
+
+    /* Muted: warm cream */
+    --muted: 0.96 0.012 100;
+    --muted-foreground: 0.50 0.022 145;
+
+    /* Accent: warm golden sand */
+    --accent: 0.93 0.048 85;
+    --accent-foreground: 0.20 0.04 80;
+
+    --destructive: 0.577 0.245 27.325;
+    --destructive-foreground: 0.985 0 0;
+
+    --border: 0.89 0.020 138;
+    --input: 0.89 0.020 138;
+    --ring: 0.42 0.095 155;
+
+    --chart-1: 0.48 0.12 152;
+    --chart-2: 0.65 0.08 90;
+    --chart-3: 0.45 0.07 200;
+    --chart-4: 0.72 0.1 50;
+    --chart-5: 0.38 0.1 160;
+
+    --sidebar: 0.96 0.01 110;
+    --sidebar-foreground: 0.18 0.03 150;
+    --sidebar-primary: 0.32 0.095 155;
+    --sidebar-primary-foreground: 0.98 0.004 100;
+    --sidebar-accent: 0.92 0.04 130;
+    --sidebar-accent-foreground: 0.22 0.055 152;
+    --sidebar-border: 0.89 0.020 138;
+    --sidebar-ring: 0.42 0.095 155;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: "Plus Jakarta Sans", "Figtree", sans-serif;
+    font-feature-settings: "kern" 1, "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* ===== CUSTOM UTILITIES ===== */
+@layer utilities {
+  .font-display {
+    font-family: "Fraunces", "Instrument Serif", Georgia, serif;
+  }
+
+  .font-serif-alt {
+    font-family: "Instrument Serif", Georgia, serif;
+  }
+
+  .font-body {
+    font-family: "Plus Jakarta Sans", "Figtree", sans-serif;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+
+  /* Glassmorphism card */
+  .glass-card {
+    background: oklch(1 0 0 / 0.7);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid oklch(1 0 0 / 0.5);
+  }
+
+  /* Soft 3D depth shadow */
+  .shadow-3d {
+    box-shadow:
+      0 2px 4px oklch(0.32 0.095 155 / 0.06),
+      0 8px 24px oklch(0.32 0.095 155 / 0.10),
+      0 20px 48px oklch(0.32 0.095 155 / 0.08);
+  }
+
+  .shadow-3d-hover {
+    box-shadow:
+      0 4px 8px oklch(0.32 0.095 155 / 0.08),
+      0 16px 40px oklch(0.32 0.095 155 / 0.16),
+      0 32px 64px oklch(0.32 0.095 155 / 0.10);
+  }
+
+  /* Warm card border with top accent */
+  .card-accent-top {
+    border-top: 3px solid oklch(0.32 0.095 155);
+  }
+}
+
+/* ===== WAVE DIVIDER SVG HELPER ===== */
+.wave-divider {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.wave-divider svg {
+  display: block;
+  width: 100%;
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
