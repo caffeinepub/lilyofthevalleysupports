@@ -9,7 +9,9 @@ import {
   AlertCircle,
   Award,
   BookOpen,
+  Car,
   CheckCircle2,
+  ChevronDown,
   ChevronRight,
   Clock,
   Coffee,
@@ -27,6 +29,7 @@ import {
   X,
 } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
+import type React from "react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -40,60 +43,127 @@ const NAV_LINKS = [
   { label: "Contact", href: "#contact" },
 ];
 
-const SERVICES = [
+type Service = {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+  description: string;
+  color: string;
+  accentColor: string;
+  bgColor: string;
+  details?: string[];
+};
+
+const SERVICES: Service[] = [
+  {
+    icon: Home,
+    title: "Accommodation",
+    description:
+      "We provide a range of accommodation options tailored to your needs, helping you find a safe, comfortable place to call home.",
+    color: "from-emerald-50 to-teal-50",
+    accentColor: "text-emerald-600",
+    bgColor: "bg-emerald-50",
+  },
   {
     icon: Heart,
-    title: "Personal Care Support",
+    title: "Daily Living Support",
     description:
-      "Dignified, compassionate assistance with daily personal care routines — helping you maintain independence and wellbeing in the comfort of your own home.",
+      "Compassionate, hands-on support with everyday tasks — personal care, meals, medication, and routines — so you can live with confidence.",
     color: "from-rose-50 to-pink-50",
     accentColor: "text-rose-600",
     bgColor: "bg-rose-50",
+  },
+  {
+    icon: BookOpen,
+    title: "Development Life-Skills",
+    description:
+      "Building practical skills for everyday independence — budgeting, cooking, transport, communication, and more.",
+    color: "from-teal-50 to-cyan-50",
+    accentColor: "text-teal-600",
+    bgColor: "bg-teal-50",
+  },
+  {
+    icon: Car,
+    title: "Assisted Transport",
+    description:
+      "Reliable, friendly transport support to help you get to appointments, community activities, and everyday destinations safely.",
+    color: "from-sky-50 to-blue-50",
+    accentColor: "text-sky-600",
+    bgColor: "bg-sky-50",
   },
   {
     icon: Users,
     title: "Community Participation",
     description:
       "Empowering you to engage meaningfully with your community — attending events, joining groups, and building social connections that matter.",
-    color: "from-sky-50 to-blue-50",
-    accentColor: "text-sky-600",
-    bgColor: "bg-sky-50",
-  },
-  {
-    icon: Home,
-    title: "Domestic Assistance",
-    description:
-      "Reliable support with household tasks like cleaning, laundry, and meal preparation so your home stays a comfortable, safe haven.",
-    color: "from-amber-50 to-yellow-50",
-    accentColor: "text-amber-600",
-    bgColor: "bg-amber-50",
-  },
-  {
-    icon: Smile,
-    title: "Social & Recreational Support",
-    description:
-      "Accompanying you to activities, hobbies, and social outings to nurture joy, purpose, and connection in your everyday life.",
     color: "from-violet-50 to-purple-50",
     accentColor: "text-violet-600",
     bgColor: "bg-violet-50",
   },
   {
-    icon: Coffee,
-    title: "Respite Care",
+    icon: ShieldCheck,
+    title: "Support Coordination",
     description:
-      "Giving family carers a well-deserved break while ensuring your loved one receives warm, attentive care from our experienced team.",
+      "Helping you understand and use your NDIS plan effectively, connecting you with the right providers and services.",
+    color: "from-amber-50 to-yellow-50",
+    accentColor: "text-amber-600",
+    bgColor: "bg-amber-50",
+  },
+  {
+    icon: Home,
+    title: "Supported Independent Living (SIL)",
+    description:
+      "Support with daily tasks to help you live as independently as possible, often in shared arrangements. Includes personal care, household tasks, medication management, and skills development.",
+    color: "from-green-50 to-emerald-50",
+    accentColor: "text-green-600",
+    bgColor: "bg-green-50",
+    details: [
+      "Assistance with personal care and daily living activities",
+      "Help with household tasks like cooking and cleaning",
+      "Support with medication management",
+      "Skills development for independent living",
+    ],
+  },
+  {
+    icon: Smile,
+    title: "Independent Living Options (ILO)",
+    description:
+      "Flexible, tailored living arrangements focused on your choice and control — living alone, with a host, or with others. ILO funding covers planning, establishment, and ongoing support.",
     color: "from-orange-50 to-amber-50",
     accentColor: "text-orange-600",
     bgColor: "bg-orange-50",
+    details: [
+      "Living alone with outreach support",
+      "Co-residency with a host or support person",
+      "Living with friends or other participants",
+      "Planning, establishment, and ongoing support covered",
+    ],
   },
   {
-    icon: BookOpen,
-    title: "Life Skills Development",
+    icon: Coffee,
+    title: "Short Term Accommodation (STA)",
     description:
-      "Building confidence and practical skills — from budgeting and cooking to public transport and communication — to support greater independence.",
-    color: "from-teal-50 to-emerald-50",
-    accentColor: "text-teal-600",
-    bgColor: "bg-teal-50",
+      "Temporary accommodation and support (respite care), giving primary caregivers a well-deserved break. Provided in respite houses, host families, or specialist facilities.",
+    color: "from-pink-50 to-rose-50",
+    accentColor: "text-pink-600",
+    bgColor: "bg-pink-50",
+    details: [
+      "Personal care and support",
+      "Activities and programs to engage the participant",
+      "Meals and accommodation",
+    ],
+  },
+  {
+    icon: Clock,
+    title: "Medium Term Accommodation (MTA)",
+    description:
+      "Temporary housing while you await a more permanent arrangement, such as an SDA property. Ensures you have a safe, supported place in the interim.",
+    color: "from-indigo-50 to-violet-50",
+    accentColor: "text-indigo-600",
+    bgColor: "bg-indigo-50",
+    details: [
+      "Accommodation in a suitable setting",
+      "Support services as needed",
+    ],
   },
 ];
 
@@ -203,6 +273,78 @@ function WaveDivider({
         <path d="M0,30 C240,60 480,0 720,30 C960,60 1200,0 1440,30 L1440,60 L0,60 Z" />
       </svg>
     </div>
+  );
+}
+
+// ─── Service Card ─────────────────────────────────────────────────────────────
+
+function ServiceCard({ service, index }: { service: Service; index: number }) {
+  const [expanded, setExpanded] = useState(false);
+  const Icon = service.icon;
+  return (
+    <motion.div
+      variants={fadeUp}
+      custom={index * 0.06}
+      whileHover={{ y: -6, scale: 1.01 }}
+      transition={{ duration: 0.2 }}
+      data-ocid={`services.item.${index + 1}`}
+    >
+      <Card className="h-full bg-card border-border shadow-3d hover:shadow-3d-hover transition-all duration-300 overflow-hidden group card-accent-top">
+        <CardContent className="p-6">
+          <div
+            className={`w-12 h-12 rounded-2xl ${service.bgColor} flex items-center justify-center mb-5`}
+          >
+            <Icon className={`w-6 h-6 ${service.accentColor}`} />
+          </div>
+          <h3 className="font-display text-[1.1rem] font-semibold text-foreground mb-2.5 leading-snug">
+            {service.title}
+          </h3>
+          <p className="text-muted-foreground text-sm leading-relaxed">
+            {service.description}
+          </p>
+          {service.details && service.details.length > 0 && (
+            <div className="mt-4">
+              <button
+                type="button"
+                onClick={() => setExpanded((p) => !p)}
+                className={`flex items-center gap-1.5 text-xs font-semibold ${service.accentColor} hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded`}
+                aria-expanded={expanded}
+                data-ocid={`services.item.${index + 1}.toggle`}
+              >
+                {expanded ? "Hide details" : "See details"}
+                <ChevronDown
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
+                />
+              </button>
+              <AnimatePresence>
+                {expanded && (
+                  <motion.ul
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.22, ease: "easeInOut" }}
+                    className="mt-3 space-y-1.5 overflow-hidden"
+                  >
+                    {service.details.map((detail) => (
+                      <li
+                        key={detail}
+                        className="flex items-start gap-2 text-xs text-muted-foreground leading-relaxed"
+                      >
+                        <span
+                          className={`mt-1 w-1.5 h-1.5 rounded-full ${service.bgColor} border ${service.accentColor.replace("text-", "border-")} flex-shrink-0`}
+                          aria-hidden="true"
+                        />
+                        {detail}
+                      </li>
+                    ))}
+                  </motion.ul>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+    </motion.div>
   );
 }
 
@@ -392,6 +534,43 @@ export default function App() {
             <div className="absolute inset-0 bg-gradient-to-r from-foreground/85 via-foreground/60 to-transparent" />
             {/* Warm golden tint at bottom */}
             <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
+
+            {/* Lily flower decorations — lg+ only */}
+            <style>{`
+              @keyframes sway-a {
+                0%   { transform: rotate(-4deg) translateY(0px); }
+                100% { transform: rotate(4deg)  translateY(-8px); }
+              }
+              @keyframes sway-b {
+                0%   { transform: rotate(3deg)  translateY(0px); }
+                100% { transform: rotate(-5deg) translateY(-6px); }
+              }
+              .lily-sway-a {
+                animation: sway-a 3.6s ease-in-out infinite alternate;
+                transform-origin: bottom center;
+              }
+              .lily-sway-b {
+                animation: sway-b 4.2s ease-in-out infinite alternate;
+                transform-origin: bottom center;
+              }
+            `}</style>
+
+            {/* Bottom-right flower — visible on all screens */}
+            <img
+              src="/assets/generated/lily-flowers-decoration-transparent.dim_400x600.png"
+              alt=""
+              aria-hidden="true"
+              className="lily-sway-a absolute bottom-0 right-0 w-28 sm:w-40 lg:w-56 xl:w-64 pointer-events-none select-none"
+              style={{ opacity: 0.88 }}
+            />
+            {/* Top-right flower — visible on all screens */}
+            <img
+              src="/assets/generated/lily-flowers-decoration-transparent.dim_400x600.png"
+              alt=""
+              aria-hidden="true"
+              className="lily-sway-b absolute top-8 right-20 sm:right-28 lg:right-36 w-20 sm:w-32 lg:w-40 xl:w-48 pointer-events-none select-none"
+              style={{ opacity: 0.8 }}
+            />
           </div>
 
           {/* Content */}
@@ -541,8 +720,19 @@ export default function App() {
         {/* ═══════════════════════════════════════════════════════
             ABOUT SECTION
         ═══════════════════════════════════════════════════════ */}
-        <section id="about" className="section-padding bg-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section
+          id="about"
+          className="section-padding bg-background relative overflow-hidden"
+        >
+          {/* Lily flower accent — bottom-left */}
+          <img
+            src="/assets/generated/lily-flowers-decoration-transparent.dim_400x600.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute bottom-0 left-0 w-40 sm:w-52 lg:w-64 pointer-events-none select-none"
+            style={{ opacity: 0.3 }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             {/* Section label */}
             <motion.p
               initial={{ opacity: 0, y: 12 }}
@@ -715,13 +905,21 @@ export default function App() {
         ═══════════════════════════════════════════════════════ */}
         <section
           id="services"
-          className="section-padding"
+          className="section-padding relative overflow-hidden"
           style={{
             background:
               "linear-gradient(180deg, oklch(0.95 0.018 138) 0%, oklch(0.985 0.004 100) 100%)",
           }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Lily flower accent — bottom-right */}
+          <img
+            src="/assets/generated/lily-flowers-decoration-transparent.dim_400x600.png"
+            alt=""
+            aria-hidden="true"
+            className="absolute bottom-0 right-0 w-44 sm:w-56 lg:w-72 pointer-events-none select-none"
+            style={{ opacity: 0.25 }}
+          />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -736,9 +934,11 @@ export default function App() {
                 Our Support Services
               </h2>
               <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
-                Tailored, flexible services designed to support your
-                independence, wellbeing, and full participation in everyday
-                life.
+                At Lily of the Valley, we offer a range of NDIS services
+                designed to support individuals with disabilities and their
+                families. Our team of experienced professionals work closely
+                with you to develop a personalised plan that addresses your
+                unique needs and goals.
               </p>
             </motion.div>
 
@@ -778,34 +978,9 @@ export default function App() {
               viewport={{ once: true }}
               className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
-              {SERVICES.map((service, i) => {
-                const Icon = service.icon;
-                return (
-                  <motion.div
-                    key={service.title}
-                    variants={fadeUp}
-                    custom={i * 0.06}
-                    whileHover={{ y: -6, scale: 1.01 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <Card className="h-full bg-card border-border shadow-3d hover:shadow-3d-hover transition-all duration-300 overflow-hidden group card-accent-top">
-                      <CardContent className="p-6">
-                        <div
-                          className={`w-12 h-12 rounded-2xl ${service.bgColor} flex items-center justify-center mb-5`}
-                        >
-                          <Icon className={`w-6 h-6 ${service.accentColor}`} />
-                        </div>
-                        <h3 className="font-display text-[1.1rem] font-semibold text-foreground mb-2.5 leading-snug">
-                          {service.title}
-                        </h3>
-                        <p className="text-muted-foreground text-sm leading-relaxed">
-                          {service.description}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                );
-              })}
+              {SERVICES.map((service, i) => (
+                <ServiceCard key={service.title} service={service} index={i} />
+              ))}
             </motion.div>
 
             <motion.div
@@ -1231,9 +1406,17 @@ export default function App() {
           background:
             "linear-gradient(160deg, oklch(0.17 0.04 155) 0%, oklch(0.13 0.03 152) 100%)",
         }}
-        className="text-white/85"
+        className="text-white/85 relative overflow-hidden"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Lily flower accent — top-right corner of footer */}
+        <img
+          src="/assets/generated/lily-flowers-decoration-transparent.dim_400x600.png"
+          alt=""
+          aria-hidden="true"
+          className="absolute top-0 right-0 w-32 sm:w-44 pointer-events-none select-none"
+          style={{ opacity: 0.22 }}
+        />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative">
           <div className="grid md:grid-cols-4 gap-10 mb-12">
             {/* Brand */}
             <div className="md:col-span-2">
